@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgres
+    restart: always
+    image: postgres:latest
+    volumes:
+      - type: volume
+        source: postgresdb-data
+        target: /var/lib/postgresql/data
+    env_file:
+      - ./.env
+    ports:
+      - '5432:5432'
+  main:
+    depends_on:
+      - db
+    container_name: mainService
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    env_file:
+      - ./.env
+
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass password
+    volumes:
+      - redis-data:/data
+
+volumes:
+  postgresdb-data:
+    driver: local
+  redis-data:
+    driver: local
