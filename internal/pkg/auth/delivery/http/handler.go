@@ -26,13 +26,13 @@ func (h *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newUser, token, exp, err := h.uc.SignIn(r.Context(), &data)
+	token, exp, err := h.uc.SignIn(r.Context(), &data)
 	if err != nil {
 		responser.WriteError(w, http.StatusBadRequest, errors.New("Incorrect data format: "+err.Error()))
 		return
 	}
 	http.SetCookie(w, jwter.TokenCookie(middleware.CookieName, token, exp))
-	responser.WriteJSON(w, http.StatusCreated, newUser)
+	responser.WriteJSON(w, http.StatusCreated, token)
 }
 
 func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {
@@ -43,13 +43,13 @@ func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, token, exp, err := h.uc.SignUp(r.Context(), &data)
+	token, exp, err := h.uc.SignUp(r.Context(), &data)
 	if err != nil {
 		responser.WriteError(w, http.StatusBadRequest, errors.New("Incorrect data format: "+err.Error()))
 		return
 	}
 	http.SetCookie(w, jwter.TokenCookie(middleware.CookieName, token, exp))
-	responser.WriteJSON(w, http.StatusCreated, user)
+	responser.WriteJSON(w, http.StatusCreated, token)
 }
 
 func (h *AuthHandler) SignOut(w http.ResponseWriter, r *http.Request) {

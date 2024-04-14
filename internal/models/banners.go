@@ -47,3 +47,10 @@ type CreateBannerRequest struct {
 	Content   Content `json:"content"`
 	IsActive  bool    `json:"is_active"`
 }
+
+type UpdateBannerRequest struct {
+	FeatureId int64   `json:"feature_id,omitempty"`
+	TagIds    []int64 `json:"tag_ids,omitempty"`
+	Content   Content `json:"content,omitempty"`
+	IsActive  *bool   `json:"is_active,omitempty"`
+}

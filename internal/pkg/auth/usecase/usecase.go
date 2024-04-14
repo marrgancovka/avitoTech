@@ -20,7 +20,7 @@ func NewUsecase(r auth.AuthRepo) *AuthUsecase {
 	return &AuthUsecase{r: r}
 }
 
-func (uc *AuthUsecase) SignUp(ctx context.Context, authData *models.AuthRequest) (uuid.UUID, string, time.Time, error) {
+func (uc *AuthUsecase) SignUp(ctx context.Context, authData *models.AuthRequest) (string, time.Time, error) {
 	newUser := &models.User{
 		Id:           uuid.NewV4(),
 		Username:     authData.Username,
@@ -28,28 +28,28 @@ func (uc *AuthUsecase) SignUp(ctx context.Context, authData *models.AuthRequest)
 		IsAdmin:      false,
 	}
 	if err := uc.r.CreateUser(ctx, newUser); err != nil {
-		return uuid.Nil, "", time.Time{}, err
+		return "", time.Time{}, err
 	}
 	token, exp, err := jwter.GenerateToken(newUser)
 	if err != nil {
-		return uuid.Nil, "", time.Time{}, err
+		return "", time.Time{}, err
 	}
-	return newUser.Id, token, exp, nil
+	return token, exp, nil
 }
 
-func (uc *AuthUsecase) SignIn(ctx context.Context, authData *models.AuthRequest) (*models.User, string, time.Time, error) {
+func (uc *AuthUsecase) SignIn(ctx context.Context, authData *models.AuthRequest) (string, time.Time, error) {
 	user, err := uc.r.GetUser(ctx, authData.Username)
 	if err != nil {
-		return nil, "", time.Time{}, err
+		return "", time.Time{}, err
 	}
-	if authData.Password != user.PasswordHash {
-		return nil, "", time.Time{}, errors.New("invalid password")
+	if hashString(authData.Password) != user.PasswordHash {
+		return "", time.Time{}, errors.New("invalid password")
 	}
 	token, exp, err := jwter.GenerateToken(user)
 	if err != nil {
-		return nil, "", time.Time{}, err
+		return "", time.Time{}, err
 	}
-	return user, token, exp, nil
+	return token, exp, nil
 }
 
 func hashString(input string) string {

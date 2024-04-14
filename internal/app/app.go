@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
@@ -46,14 +47,23 @@ func (a *App) Run() error {
 	}
 	defer db.Close()
 
-	//TODO: redis connect
+	rds := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("REDIS_URL"),
+		Password: os.Getenv("REDIS_PASSWORD"),
+		DB:       0,
+	})
+	if _, err := rds.Ping(context.Background()).Result(); err != nil {
+		a.logger.Error("failed to connect redis" + err.Error())
+	}
+	defer rds.Close()
 
 	r := mux.NewRouter().PathPrefix("/api").Subrouter()
 
 	srv := &http.Server{
-		Addr:    "localhost:8080",
-		Handler: r,
-		//TODO: cfg + time
+		Addr:         "localhost:8080",
+		Handler:      r,
+		ReadTimeout:  50 * time.Second,
+		WriteTimeout: 50 * time.Second,
 	}
 
 	aRepo := authRepo.NewRepository(db)
@@ -65,8 +75,9 @@ func (a *App) Run() error {
 	auth.HandleFunc("/sign_up", aHandler.SignUp).Methods(http.MethodPost, http.MethodOptions)
 	auth.HandleFunc("/sign_out", aHandler.SignOut).Methods(http.MethodGet, http.MethodOptions)
 
+	cache := bannerRepo.NewRedisRepo(rds)
 	bRepo := bannerRepo.NewPostgresRepo(db)
-	bUsecase := bannerUsecase.NewUseCase(bRepo)
+	bUsecase := bannerUsecase.NewUseCase(bRepo, cache)
 	bHandler := bannerHandler.NewHandler(bUsecase, a.logger)
 
 	r.Handle("/user_banner", middleware.Auth(http.HandlerFunc(bHandler.GetUserBanners), a.logger, false)).Methods(http.MethodGet, http.MethodOptions)
