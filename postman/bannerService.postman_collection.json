@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "eb032737-4069-44c0-a3cd-d81d3c2fb385",
+		"name": "bannerService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30504078"
+	},
+	"item": [
+		{
+			"name": "sign_up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"rita\",\n    \"password\": \"1108\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/api/auth/sign_up",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"sign_up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign_in",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"rita\",\n    \"password\": \"1108\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/api/auth/sign_in",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"sign_in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign_out",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{base_url}}/api/auth/sign_out",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"sign_out"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user_banner",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMyMTA4NjksImlkIjoiZmE3YTY1OWUtODlkZS00ZjY1LWFhNzItZTM4M2IxMmE2YThjIiwiaXNfYWRtaW4iOmZhbHNlfQ.5hk0chYu3eDDGDjoG-a0AzeH3M8y59Djw5RQztRdzFc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{base_url}}/api/user_banner?tag_id=1&feature_id=2",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"user_banner"
+					],
+					"query": [
+						{
+							"key": "tag_id",
+							"value": "1"
+						},
+						{
+							"key": "feature_id",
+							"value": "2"
+						},
+						{
+							"key": "use_last_revision",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get banners",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMyMTA4NjksImlkIjoiZmE3YTY1OWUtODlkZS00ZjY1LWFhNzItZTM4M2IxMmE2YThjIiwiaXNfYWRtaW4iOmZhbHNlfQ.5hk0chYu3eDDGDjoG-a0AzeH3M8y59Djw5RQztRdzFc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{base_url}}/api/banner",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banner"
+					],
+					"query": [
+						{
+							"key": "tag_id",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "feature_id",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new banner",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMxOTYzNzUsImlkIjoiYzZhODhmNjMtODY2YS00ZDBjLTkyNTQtZDBjMGQ1ZWY4ZjUyIiwiaXNfYWRtaW4iOnRydWV9.dQ8TJ5VDzz-CNv4ATswce6RmM4MafnZlZ7R9M2Pjp90",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tag_ids\": [\n    1, 6\n  ],\n  \"feature_id\": 2,\n  \"content\": {\n    \"title\": \"some_title\",\n    \"text\": \"some_text\",\n    \"url\": \"some_url\"\n  },\n  \"is_active\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/api/banner",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete banner",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMxOTYzNzUsImlkIjoiYzZhODhmNjMtODY2YS00ZDBjLTkyNTQtZDBjMGQ1ZWY4ZjUyIiwiaXNfYWRtaW4iOnRydWV9.dQ8TJ5VDzz-CNv4ATswce6RmM4MafnZlZ7R9M2Pjp90",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{base_url}}/api/banner/1",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banner",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update banner",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMxOTYzNzUsImlkIjoiYzZhODhmNjMtODY2YS00ZDBjLTkyNTQtZDBjMGQ1ZWY4ZjUyIiwiaXNfYWRtaW4iOnRydWV9.dQ8TJ5VDzz-CNv4ATswce6RmM4MafnZlZ7R9M2Pjp90",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tag_ids\": [\n    1\n  ],\n  \"feature_id\": 8,\n  \"content\": {\n    \"title\": \"some_title\",\n    \"text\": \"some_text\",\n    \"url\": \"some_url\"\n  },\n  \"is_active\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{base_url}}/api/banner/1",
+					"protocol": "http",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banner",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8080",
+			"type": "string"
+		}
+	]
+}
