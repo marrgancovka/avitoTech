@@ -13,9 +13,21 @@ services:
       - ./.env
     ports:
       - '5432:5432'
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass password
+    volumes:
+      - redis-data:/data
+
   main:
     depends_on:
       - db
+      - redis
     container_name: mainService
     build:
       context: .
@@ -25,14 +37,7 @@ services:
     env_file:
       - ./.env
 
-  redis:
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - ${REDIS_PORT}:6379
-    command: redis-server --save 20 1 --loglevel warning --requirepass password
-    volumes:
-      - redis-data:/data
+
 
 volumes:
   postgresdb-data:

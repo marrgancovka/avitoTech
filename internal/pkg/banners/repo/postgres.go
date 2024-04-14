@@ -42,7 +42,7 @@ func (r *PostgresRepo) GetBanners(ctx context.Context, data *models.GetAllBanner
 	if data.Offset != 0 {
 		conditionCount = conditionCount + " OFFSET " + strconv.FormatInt(data.Offset, 10)
 	}
-	conditionCount = conditionCount + ";"
+	conditionCount += ";"
 
 	if data.TagId != 0 {
 		conditionTag = " HAVING ARRAY_AGG(bft.id_tag) @> ARRAY[" + strconv.FormatInt(data.TagId, 10) + "]"
@@ -53,7 +53,7 @@ func (r *PostgresRepo) GetBanners(ctx context.Context, data *models.GetAllBanner
 	selectBanners := `
 		select b.id, b.id_feature, b.content, b.created_at, b.updated_at, b.is_active, array_agg(bft.id_tag)
 		from banner b
-         	join banner_feature_tag bft on b.id = bft.id_banner` + conditionFeature + ` group by b.id, b.id_feature` + conditionTag
+         	join banner_feature_tag bft on b.id = bft.id_banner` + conditionFeature + ` group by b.id, b.id_feature` + conditionTag + conditionCount
 
 	rows, err := r.db.QueryContext(ctx, selectBanners)
 	if err != nil {

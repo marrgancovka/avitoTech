@@ -1,0 +1,9 @@
+linters:
+  enable:
+    - gofmt
+    - gocritic
+    - reassign
+    - unconvert
+  disable:
+    - staticcheck
+    - errcheck

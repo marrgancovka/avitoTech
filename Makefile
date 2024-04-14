@@ -1,7 +1,4 @@
-ifneq ("$(wildcard .env)","")
 include .env
-endif
-
 
 build_:
 	go build -o ./.bin cmd/main.go
@@ -17,22 +14,19 @@ test:
 	go test -race ./...
 
 migrate-lib:
-	go get -tags 'postgres' -u github.com/golang-migrate/migrate/v4/cmd/migrate/
+	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-create-migration:
-	migrate create -dir migrations -ext sql -seq $(TABLE_NAME)
-
-migrate-up:
+migrate-up: migrate-lib
 	migrate -path schema -database "postgres://$(DB_USER):$(DB_PASS)@localhost:$(DB_PORT)/$(DB_NAME)?sslmode=disable" up
 
 migrate-down:
 	migrate -path schema -database "postgres://$(DB_USER):$(DB_PASS)@localhost:$(DB_PORT)/$(DB_NAME)?sslmode=disable" down
 
-dev-compose-up:
-	$(DOCKER_COMPOSE) -f "dev-docker-compose.yaml" up -d
+compose-build:
+	docker-compose build
 
-dev-compose-down:
-	$(DOCKER_COMPOSE) -f "dev-docker-compose.yaml" down
+compose-up:
+	docker-compose up -d
 
-swagger:
-	swag init -g cmd/main/main.go
+compose-down:
+	docker-compose down
