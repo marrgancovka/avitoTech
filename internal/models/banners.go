@@ -19,18 +19,16 @@ type Banners struct {
 }
 
 type GetUserBannersRequest struct {
-	TagId          int64  `json:"tag_id"`
-	FeatureId      int64  `json:"feature_id"`
-	UseLastVersion bool   `json:"use_last_version"`
-	Token          string `json:"token"`
+	TagId          int64 `json:"tag_id"`
+	FeatureId      int64 `json:"feature_id"`
+	UseLastVersion bool  `json:"use_last_version,omitempty"`
 }
 
 type GetAllBannersRequest struct {
-	Token     string `json:"token"`
-	FeatureId int64  `json:"feature_id"`
-	TagId     int64  `json:"tag_id"`
-	Limit     int64  `json:"limit"`
-	Offset    int64  `json:"offset"`
+	FeatureId int64 `json:"feature_id,omitempty"`
+	TagId     int64 `json:"tag_id,omitempty"`
+	Limit     int64 `json:"limit,omitempty"`
+	Offset    int64 `json:"offset,omitempty"`
 }
 
 type GetAllBannersResponse struct {
@@ -41,4 +39,11 @@ type GetAllBannersResponse struct {
 	IsActive  bool      `json:"is_active"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type CreateBannerRequest struct {
+	FeatureId int64   `json:"feature_id"`
+	TagIds    []int64 `json:"tag_ids"`
+	Content   Content `json:"content"`
+	IsActive  bool    `json:"is_active"`
 }
